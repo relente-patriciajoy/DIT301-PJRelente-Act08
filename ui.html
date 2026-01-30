@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Tracker App - UI Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1400px;
+        }
+
+        .phone-mockup {
+            width: 360px;
+            background: #fff;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-header {
+            background: #000;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .notch {
+            width: 120px;
+            height: 20px;
+            background: #000;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .screen {
+            height: 700px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Main Screen Styles */
+        .map-container {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: 
+                repeating-linear-gradient(0deg, #666, #666 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(90deg, #666, #666 1px, transparent 1px, transparent 40px);
+        }
+
+        .location-marker {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            z-index: 10;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .marker-pin {
+            width: 40px;
+            height: 50px;
+            background: #f44336;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            position: relative;
+        }
+
+        .marker-pin::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .info-card {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .info-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 12px;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .info-label {
+            color: #666;
+            margin-right: 8px;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .bottom-panel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 16px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #4caf50;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            font-size: 14px;
+            color: #2e7d32;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: #4caf50;
+        }
+
+        .btn-secondary {
+            background: #2196f3;
+        }
+
+        .fab {
+            position: absolute;
+            bottom: 100px;
+            right: 16px;
+            width: 56px;
+            height: 56px;
+            background: #ff9800;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 24px;
+        }
+
+        /* Permission Dialog Styles */
+        .dialog-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .dialog {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .dialog-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: #2196f3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 32px;
+        }
+
+        .dialog-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .dialog-text {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .permission-list {
+            background: #f5f5f5;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .permission-item {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .permission-item:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .permission-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .dialog-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dialog-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .dialog-btn-deny {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .dialog-btn-allow {
+            background: #4caf50;
+            color: #fff;
+        }
+
+        /* Splash Screen Styles */
+        .splash-screen {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 50%, #0d47a1 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #fff;
+        }
+
+        .splash-logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin-bottom: 24px;
+        }
+
+        .splash-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .splash-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+        }
+
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .screen-label {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Splash Screen -->
+        <div>
+            <div class="phone-mockup">
+                <div class="phone-header">
+                    <div class="notch"></div>
+                </div>
+                <div class="screen">
+                    <div class="splash-screen">
+                        <div class="splash-logo">📍</div>
+                        <div class="splash-title">Location Tracker</div>
+                        <div class="splash-subtitle">Track Your Journey</div>
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">Splash Screen</div>
+        </div>
+
+        <!-- Permission Dialog -->
+        <div>
+            <div class="phone-mockup">
+                <div class="phone-header">
+                    <div class="notch"></div>
+                </div>
+                <div class="screen">
+                    <div class="map-container">
+                        <div class="map-grid"></div>
+                        <div class="dialog-overlay">
+                            <div class="dialog">
+                                <div class="dialog-icon">📍</div>
+                                <div class="dialog-title">Location Permission Required</div>
+                                <div class="dialog-text">
+                                    This app needs access to your device location to display your current position on the map and track your movement in real-time.
+                                </div>
+                                <div class="permission-list">
+                                    <div class="permission-item">Access precise GPS location</div>
+                                    <div class="permission-item">Update location when you move</div>
+                                    <div class="permission-item">Show your position on the map</div>
+                                </div>
+                                <div class="dialog-buttons">
+                                    <button class="dialog-btn dialog-btn-deny">Deny</button>
+                                    <button class="dialog-btn dialog-btn-allow">Allow</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">Permission Request</div>
+        </div>
+
+        <!-- Main Screen with Location -->
+        <div>
+            <div class="phone-mockup">
+                <div class="phone-header">
+                    <div class="notch"></div>
+                </div>
+                <div class="screen">
+                    <div class="map-container">
+                        <div class="map-grid"></div>
+                        
+                        <div class="location-marker">
+                            <div class="marker-pin"></div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="info-title">Current Location</div>
+                            <div class="info-row">
+                                <span class="info-label">Latitude:</span>
+                                <span class="info-value">14.6760° N</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Longitude:</span>
+                                <span class="info-value">121.0437° E</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Accuracy:</span>
+                                <span class="info-value">±10 meters</span>
+                            </div>
+                        </div>
+
+                        <div class="fab">⚙️</div>
+
+                        <div class="bottom-panel">
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <div class="status-text">GPS Active - Tracking Location</div>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn btn-primary">Center Map</button>
+                                <button class="btn btn-secondary">Refresh</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-label">Main Screen with Location</div>
+        </div>
+    </div>
+</body>
+</html>
